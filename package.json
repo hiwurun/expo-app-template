@@ -15,9 +15,8 @@
     "lint:format": "prettier --experimental-cli --cache --check .",
     "prebuild": "expo prebuild",
     "start": "expo start --dev-client",
-    "test": "NODE_OPTIONS='--no-experimental-detect-module' npm-run-all --parallel tsc:check vitest:run lint lint:format",
+    "test": "NODE_OPTIONS='--no-experimental-detect-module' npm-run-all --parallel tsc:check lint lint:format",
     "tsc:check": "tsgo",
-    "vitest:run": "vitest run",
     "web": "expo start --web"
   },
   "dependencies": {
@@ -59,7 +58,6 @@
     "@react-native/metro-babel-transformer": "^0.81.1",
     "@types/react": "^19.2.7",
     "@typescript/native-preview": "7.0.0-dev.20251209.1",
-    "@vitejs/plugin-react": "^5.1.2",
     "eslint": "^9.39.1",
     "expo-build-disk-cache": "^0.7.1",
     "npm-run-all2": "^8.0.4",
@@ -69,8 +67,6 @@
     "react-native-css-interop": "^0.2.1",
     "react-native-svg-transformer": "^1.5.2",
     "tailwindcss": "^3.4.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.15",
-    "vitest-react-native": "^0.1.5"
+    "typescript": "^5.9.3"
   }
 }

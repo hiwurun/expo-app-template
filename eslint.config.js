@@ -59,7 +59,6 @@ export default [
             './eslint.config.js',
             './scripts/**.tsx',
             './tailwind.config.ts',
-            './vitest.config.js',
             '**/*.test.tsx',
           ],
         },
