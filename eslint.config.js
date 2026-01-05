@@ -1,75 +1,149 @@
-import nkzw from '@nkzw/eslint-config';
+import path from 'node:path';
+import expoConfig from 'eslint-config-expo/flat.js';
+import i18nJsonPlugin from 'eslint-plugin-i18n-json';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import reactCompiler from 'eslint-plugin-react-compiler';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import tailwind from 'eslint-plugin-tailwindcss';
+import testingLibrary from 'eslint-plugin-testing-library';
+// eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member, import/namespace
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import unusedImports from 'eslint-plugin-unused-imports';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import { configs, parser } from 'typescript-eslint';
 
-export default [
-  ...nkzw,
+const __dirname = import.meta.dirname;
+
+export default defineConfig([
+  globalIgnores([
+    'dist/*',
+    'node_modules',
+    '__tests__/',
+    'coverage',
+    '.expo',
+    '.expo-shared',
+    'android',
+    'ios',
+    '.vscode',
+    'docs/',
+    'cli/',
+    'expo-env.d.ts',
+  ]),
+  expoConfig,
+  eslintPluginPrettierRecommended,
+  ...tailwind.configs['flat/recommended'],
+  reactCompiler.configs.recommended,
   {
-    ignores: [
-      '__generated__',
-      '.expo',
-      'android/',
-      'dist/',
-      'ios/',
-      'vite.config.ts.timestamp-*',
-    ],
-  },
-  {
-    files: ['scripts/**/*.tsx'],
-    rules: {
-      'no-console': 0,
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+      unicorn: eslintPluginUnicorn,
+      'unused-imports': unusedImports,
     },
-  },
-  {
-    files: ['metro.config.cjs'],
     rules: {
-      '@typescript-eslint/no-require-imports': 0,
-    },
-  },
-  {
-    rules: {
-      '@typescript-eslint/array-type': [2, { default: 'generic' }],
-      '@typescript-eslint/no-restricted-imports': [
-        2,
+      'import/no-cycle': ['error', { maxDepth: '∞' }],
+      'import/prefer-default-export': 'off',
+      'max-lines-per-function': ['error', 70],
+      'max-params': ['error', 3],
+      'prettier/prettier': ['error', { ignores: ['expo-env.d.ts'] }],
+      'react/destructuring-assignment': 'off',
+      'react/display-name': 'off',
+      'react/no-inline-styles': 'off',
+      'react/require-default-props': 'off',
+      'simple-import-sort/exports': 'error',
+      'simple-import-sort/imports': 'error',
+      'tailwindcss/classnames-order': [
+        'warn',
         {
-          paths: [
-            {
-              importNames: ['Text'],
-              message:
-                'Please use the corresponding UI components from `src/ui/` instead.',
-              name: 'react-native',
-            },
-            {
-              importNames: ['ScrollView'],
-              message:
-                'Please use the corresponding UI component from `react-native-gesture-handler` instead.',
-              name: 'react-native',
-            },
-            {
-              importNames: ['BottomSheetModal'],
-              message:
-                'Please use the corresponding UI components from `src/ui/` instead.',
-              name: '@gorhom/bottom-sheet',
-            },
-          ],
+          officialSorting: true,
         },
       ],
-      'import-x/no-extraneous-dependencies': [
-        2,
+      'tailwindcss/no-custom-classname': 'off',
+      'unicorn/filename-case': [
+        'error',
         {
-          devDependencies: [
-            './eslint.config.js',
-            './scripts/**.tsx',
-            './tailwind.config.ts',
-            '**/*.test.tsx',
-          ],
+          case: 'kebabCase',
+          ignore: ['/android', '/ios'],
+        },
+      ],
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
         },
       ],
     },
-    settings: {
-      'import-x/resolver': {
-        typescript: {
-          project: './tsconfig.json',
-        },
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        sourceType: 'module',
       },
     },
+    rules: {
+      ...configs.recommended.rules,
+      '@typescript-eslint/comma-dangle': 'off',
+      '@typescript-eslint/consistent-type-imports': [
+        'warn',
+        {
+          disallowTypeAnnotations: true,
+          fixStyle: 'inline-type-imports',
+          prefer: 'type-imports',
+        },
+      ],
+    },
   },
-];
+  {
+    files: ['src/translations/*.json'],
+    plugins: { 'i18n-json': i18nJsonPlugin },
+    processor: {
+      meta: { name: '.json' },
+      ...i18nJsonPlugin.processors['.json'],
+    },
+    rules: {
+      ...i18nJsonPlugin.configs.recommended.rules,
+      'i18n-json/identical-keys': [
+        2,
+        {
+          filePath: path.resolve(__dirname, './src/translations/en.json'),
+        },
+      ],
+      'i18n-json/sorted-keys': [
+        2,
+        {
+          indentSpaces: 2,
+          order: 'asc',
+        },
+      ],
+      'i18n-json/valid-json': 2,
+      'i18n-json/valid-message-syntax': [
+        2,
+        {
+          syntax: path.resolve(
+            __dirname,
+            './scripts/i18next-syntax-validation.js',
+          ),
+        },
+      ],
+      'prettier/prettier': [
+        0,
+        {
+          endOfLine: 'auto',
+          singleQuote: true,
+        },
+      ],
+    },
+  },
+  {
+    files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+    plugins: { 'testing-library': testingLibrary },
+    rules: {
+      ...testingLibrary.configs.react.rules,
+    },
+  },
+]);

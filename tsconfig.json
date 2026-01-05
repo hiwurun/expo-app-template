@@ -1,25 +1,25 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "allowJs": true,
-    "checkJs": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "noEmit": true,
-    "noImplicitOverride": true,
-    "noUnusedLocals": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
     "strict": true,
-    "target": "es2022"
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@env": ["./src/lib/env.js"]
+    },
+    "esModuleInterop": true,
+    "checkJs": true
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "docs",
+    "cli",
+    "android",
+    "ios",
+    "lint-staged.config.js"
+  ],
   "include": [
     "**/*.ts",
     "**/*.tsx",
