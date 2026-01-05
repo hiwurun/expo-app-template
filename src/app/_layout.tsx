@@ -19,12 +19,12 @@ export default function RootLayout() {
             screenOptions={{
               headerShown: false,
               animation: 'fade',
-              gestureEnabled: true,
+              gestureEnabled: false,
             }}
           >
             <Stack.Screen name="welcome" />
-            <Stack.Screen name="login" options={{ gestureEnabled: false }} />
-            <Stack.Screen name="register" options={{ gestureEnabled: false }} />
+            <Stack.Screen name="login" />
+            <Stack.Screen name="register" />
             <Stack.Screen name="(app)" />
           </Stack>
         </VStack>
