@@ -6,7 +6,7 @@ export default function TabLayout() {
   const { isAuthenticated } = useViewerContext();
 
   if (!isAuthenticated) {
-    return <Redirect href="/login" />;
+    return <Redirect href="/welcome" />;
   }
 
   return (
