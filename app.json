@@ -31,7 +31,7 @@
     },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -41,6 +41,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.OpenVLab.App",
+      "userInterfaceStyle": "automatic",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -51,6 +52,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.OpenVLab.App",
+      "userInterfaceStyle": "automatic",
       "predictiveBackGestureEnabled": true
     },
     "newArchEnabled": true,
