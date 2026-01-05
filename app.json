@@ -17,7 +17,6 @@
           "launchMode": "most-recent"
         }
       ],
-      "expo-localization",
       "expo-font",
       "expo-web-browser"
     ],

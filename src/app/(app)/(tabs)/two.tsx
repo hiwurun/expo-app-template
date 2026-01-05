@@ -8,7 +8,7 @@ export default function Two() {
   return (
     <VStack flex1 padding={16}>
       <Text onPress={logout}>
-        <fbt desc="Two header title">Logout</fbt>
+        Logout
       </Text>
     </VStack>
   );
