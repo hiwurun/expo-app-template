@@ -1,3 +1,4 @@
+import { navigationConfig, rootRoutes } from '@/config/routes';
 import { ViewerContext } from '@/user/useViewerContext';
 import { VStack } from '@nkzw/stack';
 import { PortalHost } from '@rn-primitives/portal';
@@ -6,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../../global.css';
 
 export const unstable_settings = {
-  initialRouteName: '(app)',
+  initialRouteName: navigationConfig.initialRouteName,
 };
 
 export default function RootLayout() {
@@ -15,17 +16,10 @@ export default function RootLayout() {
       <GestureHandlerRootView>
         {/* <ThemeToggle /> */}
         <VStack className="!basis-full" flex1>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              animation: 'fade',
-              gestureEnabled: false,
-            }}
-          >
-            <Stack.Screen name="welcome" />
-            <Stack.Screen name="login" />
-            <Stack.Screen name="register" />
-            <Stack.Screen name="(app)" />
+          <Stack screenOptions={navigationConfig.stackScreenOptions}>
+            {rootRoutes.map((route) => (
+              <Stack.Screen key={route.name} name={route.name} />
+            ))}
           </Stack>
         </VStack>
         <PortalHost />
