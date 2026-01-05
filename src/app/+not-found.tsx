@@ -1,6 +1,6 @@
+import { Text } from '@/components/ui/text';
 import { Link, Stack } from 'expo-router';
 import { View } from 'react-native';
-import Text from '../ui/Text.tsx';
 
 export default function NotFoundScreen() {
   return (
@@ -11,9 +11,7 @@ export default function NotFoundScreen() {
           This screen doesn&apos;t exist.
         </Text>
         <Link className="mt-4 pt-4" href="/">
-          <Text className="text-base text-[#2e78b7]">
-            Go to home screen!
-          </Text>
+          <Text className="text-base text-[#2e78b7]">Go to home screen!</Text>
         </Link>
       </View>
     </>

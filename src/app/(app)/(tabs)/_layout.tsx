@@ -2,7 +2,6 @@ import _AntDesign from '@expo/vector-icons/AntDesign.js';
 import { type IconProps } from '@expo/vector-icons/build/createIconSet.js';
 import { Tabs } from 'expo-router';
 import { FC } from 'react';
-import colors from '../../../ui/colors.ts';
 
 // Types in `@expo/vector-icons` do not currently work correctly in `"type": "module"` packages.
 const AntDesign = _AntDesign as unknown as FC<IconProps<string>>;
@@ -12,9 +11,9 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         sceneStyle: {
-          backgroundColor: colors.screen,
+          backgroundColor: 'bg-background',
         },
-        tabBarActiveTintColor: colors.accent,
+        tabBarActiveTintColor: 'text-accent',
       }}
     >
       <Tabs.Screen
@@ -22,7 +21,7 @@ export default function TabLayout() {
         options={{
           tabBarIcon: ({ focused }: { focused: boolean }) => (
             <AntDesign
-              color={focused ? colors.accent : colors.text}
+              color={focused ? 'text-accent' : 'text-text'}
               name="ie"
               size={24}
             />
@@ -35,7 +34,7 @@ export default function TabLayout() {
         options={{
           tabBarIcon: ({ focused }: { focused: boolean }) => (
             <AntDesign
-              color={focused ? colors.accent : colors.text}
+              color={focused ? 'text-accent' : 'text-text'}
               name="printer"
               size={24}
             />

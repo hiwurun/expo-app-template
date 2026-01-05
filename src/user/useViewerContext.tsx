@@ -41,7 +41,7 @@ const [ViewerContext, useViewerContext] = createContextHook(() => {
   const logout = useCallback(async () => {
     // Implement your logout logic here.
     setViewerContext(null);
-    router.replace('/');
+    router.replace('/login');
   }, [router]);
 
   const getLocalSetting = useCallback(

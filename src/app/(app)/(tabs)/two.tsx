@@ -1,15 +1,13 @@
+import { Text } from '@/components/ui/text';
+import useViewerContext from '@/user/useViewerContext';
 import { VStack } from '@nkzw/stack';
-import Text from '../../../ui/Text.tsx';
-import useViewerContext from '../../../user/useViewerContext.tsx';
 
 export default function Two() {
   const { logout } = useViewerContext();
 
   return (
     <VStack flex1 padding={16}>
-      <Text onPress={logout}>
-        Logout
-      </Text>
+      <Text onPress={logout}>Logout</Text>
     </VStack>
   );
 }

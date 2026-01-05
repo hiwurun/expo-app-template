@@ -1,6 +1,6 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Redirect, Stack } from 'expo-router';
-import useViewerContext from '../../user/useViewerContext.tsx';
+import useViewerContext from '../../user/useViewerContext';
 
 export default function TabLayout() {
   const { isAuthenticated } = useViewerContext();
