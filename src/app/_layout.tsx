@@ -6,6 +6,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Toaster } from 'sonner-native';
 import '../../global.css';
 
 export const unstable_settings = {
@@ -25,6 +26,7 @@ export default function RootLayout() {
               ))}
             </Stack>
           </VStack>
+          <Toaster />
           <PortalHost />
         </SafeAreaProvider>
       </QueryClientProvider>

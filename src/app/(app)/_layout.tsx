@@ -1,12 +1,18 @@
+import useAuthStore, { selectIsLoggedIn } from '@/stores/useAuthStore';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 
 export default function TabLayout() {
-  // const { isAuthenticated } = useViewerContext();
+  const isLoggedIn = useAuthStore(selectIsLoggedIn);
+  const hasHydrated = useAuthStore((state) => state.hasHydrated);
 
-  // if (!isAuthenticated) {
-  //   return <Redirect href="/welcome" />;
-  // }
+  if (!hasHydrated) {
+    return null;
+  }
+
+  if (!isLoggedIn) {
+    return <Redirect href="/login" />;
+  }
 
   return (
     <BottomSheetModalProvider>

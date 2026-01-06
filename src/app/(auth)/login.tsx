@@ -16,10 +16,40 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import { Eye, EyeClosed, Lock, Phone, ShieldCheck } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Control, FieldValues, Path, useForm } from 'react-hook-form';
 import { Pressable, ScrollView, View } from 'react-native';
 
 const iconSize = 20;
+const supportRowHeightClass = 'h-10';
+
+type PhoneFieldProps<T extends FieldValues> = {
+  control: Control<T>;
+  name?: Path<T>;
+  error?: string;
+};
+
+function PhoneField<T extends FieldValues>({
+  control,
+  name = 'phone' as Path<T>,
+  error,
+}: PhoneFieldProps<T>) {
+  return (
+    <FormInput
+      control={control}
+      name={name}
+      label="手机号"
+      placeholder="请输入手机号"
+      leftIcon={<Phone size={iconSize} />}
+      keyboardType="phone-pad"
+      containerClassName={cn(
+        'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
+        error && 'border-destructive',
+      )}
+      className="text-foreground"
+      error={error}
+    />
+  );
+}
 
 export default function Login() {
   const router = useRouter();
@@ -27,8 +57,8 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const passwordLogin = useLogin('password');
-  const codeLogin = useLogin('code');
+  const { mutation: passwordLogin } = useLogin('password');
+  const { mutation: codeLogin } = useLogin('code');
   const sendCode = useSendCode();
 
   const passwordForm = useForm<LoginPasswordInput>({
@@ -73,7 +103,7 @@ export default function Login() {
       : codeForm.formState.isValid;
 
   return (
-    <AuthScaffold bgTop={-180}>
+    <AuthScaffold bgTop={-200}>
       <ScrollView
         className="flex-1"
         contentContainerClassName="flex-grow justify-end px-6 pb-12 pt-20"
@@ -116,18 +146,8 @@ export default function Login() {
 
             {loginType === 'password' ? (
               <>
-                <FormInput
+                <PhoneField
                   control={passwordForm.control}
-                  name="phone"
-                  label="手机号"
-                  placeholder="请输入手机号"
-                  leftIcon={<Phone size={iconSize} />}
-                  keyboardType="phone-pad"
-                  containerClassName={cn(
-                    'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
-                    passwordForm.formState.errors.phone && 'border-destructive',
-                  )}
-                  className="text-foreground"
                   error={passwordForm.formState.errors.phone?.message}
                 />
 
@@ -156,7 +176,12 @@ export default function Login() {
                   error={passwordForm.formState.errors.password?.message}
                 />
 
-                <View className="flex-row items-center justify-between">
+                <View
+                  className={cn(
+                    'flex-row items-center justify-between',
+                    supportRowHeightClass,
+                  )}
+                >
                   <View className="flex-row items-center gap-3">
                     <Checkbox
                       checked={rememberMe}
@@ -180,18 +205,8 @@ export default function Login() {
               </>
             ) : (
               <>
-                <FormInput
+                <PhoneField
                   control={codeForm.control}
-                  name="phone"
-                  label="手机号"
-                  placeholder="请输入手机号"
-                  leftIcon={<Phone size={iconSize} />}
-                  keyboardType="phone-pad"
-                  containerClassName={cn(
-                    'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
-                    codeForm.formState.errors.phone && 'border-destructive',
-                  )}
-                  className="text-foreground"
                   error={codeForm.formState.errors.phone?.message}
                 />
 
@@ -226,6 +241,8 @@ export default function Login() {
                   className="text-foreground"
                   error={codeForm.formState.errors.code?.message}
                 />
+
+                <View className={supportRowHeightClass} />
               </>
             )}
           </View>
