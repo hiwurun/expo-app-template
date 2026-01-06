@@ -35,6 +35,7 @@ export const signupSchema = z
       .string()
       .length(6, '验证码为6位数字')
       .regex(/^\d{6}$/, '验证码只能包含数字'),
+
     password: z
       .string()
       .min(8, '密码至少8位')
@@ -46,7 +47,6 @@ export const signupSchema = z
     path: ['confirmPassword'],
   });
 
-// 导出类型
 export type LoginPasswordInput = z.infer<typeof loginPasswordSchema>;
 export type LoginCodeInput = z.infer<typeof loginCodeSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;

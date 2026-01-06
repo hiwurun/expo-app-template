@@ -1,28 +1,43 @@
 import { AuthScaffold } from '@/components/AuthScaffold';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
+import { FormInput } from '@/components/ui/form-input';
 import { Text } from '@/components/ui/text';
-import useViewerContext from '@/user/useViewerContext';
+import useLogin from '@/hooks/auth/useLogin';
+import { cn } from '@/lib/utils';
+import { loginPasswordSchema, type LoginPasswordInput } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import { Eye, EyeClosed, Lock, Phone } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Pressable, ScrollView, View } from 'react-native';
 
 const iconSize = 20;
 
 export default function Login() {
   const router = useRouter();
-  const { login } = useViewerContext();
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
+  const { login } = useLogin('password');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-
-  const onLogin = useCallback(async () => {
-    await login();
-    router.replace('/');
-  }, [login, router]);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<LoginPasswordInput>({
+    resolver: zodResolver(loginPasswordSchema),
+    defaultValues: {
+      phone: '',
+      password: '',
+    },
+    mode: 'onChange',
+  });
+  const onLogin = useCallback(
+    async (_values: LoginPasswordInput) => {
+      await login();
+    },
+    [login],
+  );
 
   return (
     <AuthScaffold bgTop={-120}>
@@ -39,44 +54,44 @@ export default function Login() {
           </View>
 
           <View className="gap-6">
-            <View className="gap-2">
-              <Text className="text-base font-medium text-muted-foreground">
-                手机号
-              </Text>
-              <Input
-                placeholder="请输入手机号"
-                value={phone}
-                onChangeText={setPhone}
-                leftIcon={<Phone size={iconSize} />}
-                keyboardType="phone-pad"
-                containerClassName="bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2"
-                className="text-foreground"
-              />
-            </View>
+            <FormInput
+              control={control}
+              name="phone"
+              label="手机号"
+              placeholder="请输入手机号"
+              leftIcon={<Phone size={iconSize} />}
+              keyboardType="phone-pad"
+              containerClassName={cn(
+                'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
+                errors.phone && 'border-destructive',
+              )}
+              className="text-foreground"
+              error={errors.phone?.message}
+            />
 
-            <View className="gap-2">
-              <Text className="text-base font-medium text-muted-foreground">
-                密码
-              </Text>
-              <Input
-                placeholder="请输入密码"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-                leftIcon={<Lock size={iconSize} />}
-                rightIcon={
-                  <Pressable onPress={() => setShowPassword(!showPassword)}>
-                    {showPassword ? (
-                      <Eye size={iconSize} />
-                    ) : (
-                      <EyeClosed size={iconSize} />
-                    )}
-                  </Pressable>
-                }
-                containerClassName="bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2"
-                className="text-foreground"
-              />
-            </View>
+            <FormInput
+              control={control}
+              name="password"
+              label="密码"
+              placeholder="请输入密码"
+              secureTextEntry={!showPassword}
+              leftIcon={<Lock size={iconSize} />}
+              rightIcon={
+                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                  {showPassword ? (
+                    <Eye size={iconSize} />
+                  ) : (
+                    <EyeClosed size={iconSize} />
+                  )}
+                </Pressable>
+              }
+              containerClassName={cn(
+                'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
+                errors.password && 'border-destructive',
+              )}
+              className="text-foreground"
+              error={errors.password?.message}
+            />
 
             <View className="flex-row items-center justify-between">
               <View className="flex-row items-center gap-3">
@@ -102,9 +117,10 @@ export default function Login() {
           </View>
 
           <Button
-            onPress={onLogin}
+            onPress={handleSubmit(onLogin)}
             variant="destructive"
             size="lg"
+            disabled={!isValid || isSubmitting}
             className="mt-4 rounded-xl shadow-sm active:opacity-90"
           >
             <Text className="text-lg font-semibold text-destructive-foreground">
