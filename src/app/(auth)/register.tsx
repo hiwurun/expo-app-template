@@ -17,7 +17,7 @@ const iconSize = 20;
 export default function Register() {
   const router = useRouter();
 
-  const passwordLogin = useLogin('password');
+  const { mutation: passwordLogin } = useLogin('password');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const {
