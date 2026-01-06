@@ -1,9 +1,10 @@
 import { AuthScaffold } from '@/components/AuthScaffold';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 import useViewerContext from '@/user/useViewerContext';
 import { useRouter } from 'expo-router';
-import { Eye, EyeClosed, Lock, Mail, Phone } from 'lucide-react-native';
+import { Eye, EyeClosed, Lock, Phone } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
@@ -11,7 +12,6 @@ export default function Register() {
   const router = useRouter();
   const { login } = useViewerContext(); // Using login context for now as registration placeholder
 
-  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -25,125 +25,99 @@ export default function Register() {
   }, [login, router]);
 
   return (
-    <AuthScaffold bgTop={-280}>
+    <AuthScaffold bgTop={-200}>
       <ScrollView
         className="flex-1"
         contentContainerClassName="flex-grow justify-end px-6 pb-12 pt-20"
       >
         <View className="w-full max-w-md gap-8">
-          {/* Header */}
           <View className="gap-2">
-            <Text className="text-[38px] font-medium text-[#424242]">
-              Sign up
+            <Text className="text-[38px] font-medium text-foreground">
+              注册
             </Text>
-            <View className="h-[3px] w-[74px] bg-[#FF8383]" />
+            <View className="h-[3px] w-[74px] bg-destructive" />
           </View>
 
-          {/* Form */}
           <View className="gap-5">
-            {/* Email */}
             <View className="gap-2">
-              <Text className="text-base font-medium text-[#616161]">
-                Email
+              <Text className="text-base font-medium text-muted-foreground">
+                手机号
               </Text>
               <Input
-                placeholder="demo@email.com"
-                value={email}
-                onChangeText={setEmail}
-                leftIcon={<Mail size={24} color="#BDBDBD" />}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                containerClassName="bg-transparent border-0 border-b border-[#FF8383] rounded-none px-0 h-auto py-2"
-                className="text-[#616161]"
-              />
-            </View>
-
-            {/* Phone */}
-            <View className="gap-2">
-              <Text className="text-base font-medium text-[#616161]">
-                Phone no
-              </Text>
-              <Input
-                placeholder="+00 000-0000-000"
+                placeholder="请输入手机号"
                 value={phone}
                 onChangeText={setPhone}
-                leftIcon={<Phone size={24} color="#BDBDBD" />}
+                leftIcon={<Phone size={20} />}
                 keyboardType="phone-pad"
-                containerClassName="bg-transparent border-0 border-b border-[#FF8383] rounded-none px-0 h-auto py-2"
-                className="text-[#616161]"
+                containerClassName="bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2"
+                className="text-foreground"
               />
             </View>
 
-            {/* Password */}
             <View className="gap-2">
-              <Text className="text-base font-medium text-[#616161]">
-                Password
+              <Text className="text-base font-medium text-muted-foreground">
+                密码
               </Text>
               <Input
-                placeholder="enter your password"
+                placeholder="请输入密码"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
-                leftIcon={<Lock size={24} color="#BDBDBD" />}
+                leftIcon={<Lock size={20} />}
                 rightIcon={
                   <Pressable onPress={() => setShowPassword(!showPassword)}>
-                    {showPassword ? (
-                      <Eye size={24} color="#BDBDBD" />
-                    ) : (
-                      <EyeClosed size={24} color="#BDBDBD" />
-                    )}
+                    {showPassword ? <Eye size={20} /> : <EyeClosed size={20} />}
                   </Pressable>
                 }
-                containerClassName="bg-transparent border-0 border-b border-[#BDBDBD] rounded-none px-0 h-auto py-2"
-                className="text-[#616161]"
+                containerClassName="bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2"
+                className="text-foreground"
               />
             </View>
 
-            {/* Confirm Password */}
             <View className="gap-2">
-              <Text className="text-base font-medium text-[#616161]">
-                Confirm Password
+              <Text className="text-base font-medium text-muted-foreground">
+                确认密码
               </Text>
               <Input
-                placeholder="Confirm your password"
+                placeholder="请再次输入密码"
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
                 secureTextEntry={!showConfirmPassword}
-                leftIcon={<Lock size={24} color="#BDBDBD" />}
+                leftIcon={<Lock size={20} />}
                 rightIcon={
                   <Pressable
                     onPress={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
-                      <Eye size={24} color="#BDBDBD" />
+                      <Eye size={20} />
                     ) : (
-                      <EyeClosed size={24} color="#BDBDBD" />
+                      <EyeClosed size={20} />
                     )}
                   </Pressable>
                 }
-                containerClassName="bg-transparent border-0 border-b border-[#BDBDBD] rounded-none px-0 h-auto py-2"
-                className="text-[#616161]"
+                containerClassName="bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2"
+                className="text-foreground"
               />
             </View>
           </View>
 
-          {/* Action Button */}
-          <Pressable
+          <Button
             onPress={onSignUp}
-            className="mt-4 items-center justify-center rounded-xl bg-[#FF8383] py-3.5 shadow-sm active:opacity-90"
+            variant="destructive"
+            size="lg"
+            className="mt-4 rounded-xl shadow-sm active:opacity-90"
           >
-            <Text className="text-lg font-semibold text-[#F8F8FF]">
-              Create Account
+            <Text className="text-lg font-semibold text-destructive-foreground">
+              创建账号
             </Text>
-          </Pressable>
+          </Button>
 
-          {/* Footer */}
           <View className="flex-row justify-center gap-1">
-            <Text className="text-sm text-[#9E9E9E]">
-              Already have an Account!
-            </Text>
+            <Text className="text-sm text-muted-foreground">已有账号？</Text>
             <Pressable onPress={() => router.replace('/login')}>
-              <Text className="text-sm font-medium text-[#FF8383]">Login</Text>
+              <Text className="text-sm font-medium text-destructive">
+                前往登录
+              </Text>
             </Pressable>
           </View>
         </View>

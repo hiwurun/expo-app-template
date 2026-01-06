@@ -1,3 +1,5 @@
+// tailwind.config.js
+
 const { hairlineWidth } = require('nativewind/theme');
 
 /** @type {import('tailwindcss').Config} */
@@ -12,76 +14,68 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        border: {
-          DEFAULT: 'hsl(0, 0%, 89.8%)',
-          dark: 'hsl(0, 0%, 14.9%)',
-        },
-        input: {
-          DEFAULT: 'hsl(0, 0%, 89.8%)',
-          dark: 'hsl(0, 0%, 14.9%)',
-        },
-        ring: {
-          DEFAULT: 'hsl(0, 0%, 63%)',
-          dark: 'hsl(300, 0%, 45%)',
-        },
-        background: {
-          DEFAULT: 'hsl(0, 0%, 100%)',
-          dark: 'hsl(0, 0%, 3.9%)',
-        },
-        foreground: {
-          DEFAULT: 'hsl(0, 0%, 3.9%)',
-          dark: 'hsl(0, 0%, 98%)',
-        },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+
         primary: {
-          DEFAULT: 'hsl(0, 0%, 9%)',
-          dark: 'hsl(0, 0%, 98%)',
-          foreground: 'hsl(0, 0%, 98%)',
-          'foreground-dark': 'hsl(0, 0%, 9%)',
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
+
         secondary: {
-          DEFAULT: 'hsl(0, 0%, 96.1%)',
-          dark: 'hsl(0, 0%, 14.9%)',
-          foreground: 'hsl(0, 0%, 9%)',
-          'foreground-dark': 'hsl(0, 0%, 98%)',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
+
         destructive: {
-          DEFAULT: 'hsl(0, 84.2%, 60.2%)',
-          dark: 'hsl(0, 70.9%, 59.4%)',
-          foreground: 'hsl(0, 0%, 98%)',
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
+
         muted: {
-          DEFAULT: 'hsl(0, 0%, 96.1%)',
-          dark: 'hsl(0, 0%, 14.9%)',
-          foreground: 'hsl(0, 0%, 45.1%)',
-          'foreground-dark': 'hsl(0, 0%, 63.9%)',
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
+
         accent: {
-          DEFAULT: 'hsl(0, 0%, 96.1%)',
-          dark: 'hsl(0, 0%, 14.9%)',
-          foreground: 'hsl(0, 0%, 9%)',
-          'foreground-dark': 'hsl(0, 0%, 98%)',
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
+
         popover: {
-          DEFAULT: 'hsl(0, 0%, 100%)',
-          dark: 'hsl(0, 0%, 3.9%)',
-          foreground: 'hsl(0, 0%, 3.9%)',
-          'foreground-dark': 'hsl(0, 0%, 98%)',
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
         },
+
         card: {
-          DEFAULT: 'hsl(0, 0%, 100%)',
-          dark: 'hsl(0, 0%, 3.9%)',
-          foreground: 'hsl(0, 0%, 3.9%)',
-          'foreground-dark': 'hsl(0, 0%, 98%)',
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+
+        // 用于图表（如 recharts 或自定义组件）
+        chart: {
+          '1': 'hsl(var(--chart-1))',
+          '2': 'hsl(var(--chart-2))',
+          '3': 'hsl(var(--chart-3))',
+          '4': 'hsl(var(--chart-4))',
+          '5': 'hsl(var(--chart-5))',
         },
       },
+
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+
       borderWidth: {
         hairline: hairlineWidth(),
       },
+
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
@@ -92,14 +86,19 @@ module.exports = {
           to: { height: '0' },
         },
       },
+
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
     },
   },
+
   future: {
     hoverOnlyWhenSupported: true,
   },
-  plugins: [require('tailwindcss-animate')],
+
+  plugins: [
+    require('tailwindcss-animate'), // 用于 shadcn/ui 动画
+  ],
 };

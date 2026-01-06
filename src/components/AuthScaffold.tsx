@@ -43,7 +43,7 @@ export function AuthScaffold({
   });
 
   return (
-    <SafeAreaView className="flex-1 bg-[#FFFCFC]">
+    <SafeAreaView className="flex-1">
       <Animated.Image
         source={loginBg}
         resizeMode="cover"
