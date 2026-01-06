@@ -18,13 +18,9 @@ type AuthState = {
 };
 
 const mmkvStorage: StateStorage = {
-  getItem: (name) => Storage.getRaw(name),
-  setItem: (name, value) => {
-    Storage.setRaw(name, value);
-  },
-  removeItem: (name) => {
-    Storage.remove(name);
-  },
+  getItem: (name) => Storage.get(name),
+  setItem: (name, value) => Storage.set(name, value),
+  removeItem: (name) => Storage.remove(name),
 };
 
 const useAuthStore = create<AuthState>()(
