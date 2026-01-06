@@ -10,11 +10,13 @@ const AntDesign = _AntDesign as unknown as FC<IconProps<string>>;
  */
 
 // 根路由配置
-export const rootRoutes = [
+export const rootRoutes = [{ name: '(auth)' }, { name: '(app)' }] as const;
+
+// 认证路由配置
+export const authRoutes = [
   { name: 'welcome' },
   { name: 'login' },
   { name: 'register' },
-  { name: '(app)' },
 ] as const;
 
 // Tab 路由配置
