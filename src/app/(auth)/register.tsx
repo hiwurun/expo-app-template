@@ -2,9 +2,9 @@ import { AuthScaffold } from '@/components/AuthScaffold';
 import { Button } from '@/components/ui/button';
 import { FormInput } from '@/components/ui/form-input';
 import { Text } from '@/components/ui/text';
+import useLogin from '@/hooks/auth/useLogin';
 import { cn } from '@/lib/utils';
 import { signupSchema, type SignupInput } from '@/schemas';
-import useViewerContext from '@/user/useViewerContext';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import { Eye, EyeClosed, KeyRound, Lock, Phone } from 'lucide-react-native';
@@ -16,7 +16,8 @@ const iconSize = 20;
 
 export default function Register() {
   const router = useRouter();
-  const { login } = useViewerContext();
+
+  const { login } = useLogin('password');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const {

@@ -1,9 +1,8 @@
 import { Text } from '@/components/ui/text';
-import useViewerContext from '@/user/useViewerContext';
 import { VStack } from '@nkzw/stack';
 
 export default function Two() {
-  const { logout } = useViewerContext();
+  // const { logout } = useViewerContext();
 
   return (
     <VStack flex1 padding={16}>
