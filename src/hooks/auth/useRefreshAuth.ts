@@ -16,7 +16,7 @@ export interface RefreshAuthResponse {
 export default function useRefreshAuth() {
   const setAuth = useAuthStore((state) => state.setAuth);
   const query = useQuery({
-    queryKey: AUTH_QUERY_KEYS.refresh,
+    queryKey: AUTH_QUERY_KEYS.REFRESH,
     queryFn: async () => {
       return await fetchGET<RefreshAuthResponse>(GET_USER, {
         include_permissions: 1,
