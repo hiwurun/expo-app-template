@@ -8,3 +8,11 @@ export const AUTH_API_ENDPOINTS = {
   REGISTER: '/internal-api/auth/register' /** 注册 */,
   RESET_PASSWORD: '/internal-api/auth/reset-password' /** 重置密码 */,
 } as const;
+
+/**
+ * 用户模块 API 端点常量
+ */
+export const USER_API_ENDPOINTS = {
+  GET_POINTS: '/internal-api/points' /** 获取用户积分 */,
+  GET_USER: '/internal-api/auth/user' /** 获取用户信息 */,
+} as const;

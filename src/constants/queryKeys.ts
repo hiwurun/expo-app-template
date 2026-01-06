@@ -1,3 +1,4 @@
 export const AUTH_QUERY_KEYS = {
-  loginPassword: ['auth', 'login-password'] as const,
+  points: ['user', 'points'] as const,
+  refresh: ['auth', 'refresh'] as const,
 } as const;

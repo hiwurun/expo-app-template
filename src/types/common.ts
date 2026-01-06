@@ -18,3 +18,12 @@ export interface User {
   created_at: string;
   updated_at: string;
 }
+
+export interface Points {
+  id: number;
+  user_id: number;
+  points_balance: number;
+  total_earned: number;
+  total_spent: number;
+  level: number;
+}

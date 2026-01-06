@@ -1,10 +1,23 @@
+import useAuthStore from '@/stores/useAuthStore';
+import usePointsStore from '@/stores/usePointsStore';
 import type { ApiResponse } from '@/types';
+import { router } from 'expo-router';
 
 /**
  * 获取 API 基础 URL
  */
 const getBaseURL = (): string => {
   return process.env.EXPO_PUBLIC_API_BASE_URL || '';
+};
+
+/**
+ * 处理 401 未授权错误
+ * 清除认证状态并跳转到欢迎页面
+ */
+const handleUnauthorized = () => {
+  useAuthStore.getState().logout();
+  usePointsStore.getState().clearPoints();
+  router.replace('/welcome');
 };
 
 /**
@@ -22,6 +35,9 @@ export async function fetchJSON<T = any>(
     // 构建完整 URL
     const fullURL = `${getBaseURL()}${url}`;
 
+    // 获取 token
+    const token = useAuthStore.getState().token;
+
     // 发起请求
     const response = await fetch(fullURL, {
       ...options,
@@ -31,6 +47,12 @@ export async function fetchJSON<T = any>(
         ...options?.headers,
       },
     });
+
+    // 处理 401 未授权
+    if (response.status === 401) {
+      handleUnauthorized();
+      throw new Error('登录已过期，请重新登录');
+    }
 
     // 解析响应
     const data: ApiResponse<T> = await response.json();
