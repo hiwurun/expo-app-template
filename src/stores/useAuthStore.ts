@@ -10,6 +10,7 @@ import { immer } from 'zustand/middleware/immer';
 
 type AuthState = {
   user: User | null;
+  token: string | null;
   hasHydrated: boolean;
   setAuth: (payload: { user: User; token: string }) => void;
   logout: () => void;
@@ -17,9 +18,9 @@ type AuthState = {
 };
 
 const mmkvStorage: StateStorage = {
-  getItem: (name) => Storage.get(name) ?? null,
+  getItem: (name) => Storage.getRaw(name),
   setItem: (name, value) => {
-    Storage.set(name, value);
+    Storage.setRaw(name, value);
   },
   removeItem: (name) => {
     Storage.remove(name);
@@ -30,17 +31,17 @@ const useAuthStore = create<AuthState>()(
   persist(
     immer((set) => ({
       user: null,
+      token: null,
       hasHydrated: false,
       setAuth: ({ user, token }) =>
         set((state) => {
           state.user = user;
-          // 存储 token 到 Storage
-          Storage.set('auth-token', token);
+          state.token = token;
         }),
       logout: () =>
         set((state) => {
           state.user = null;
-          Storage.remove('auth-token');
+          state.token = null;
         }),
       setHydrated: (value: boolean) =>
         set((state) => {
@@ -52,6 +53,7 @@ const useAuthStore = create<AuthState>()(
       storage: createJSONStorage(() => mmkvStorage),
       partialize: (state) => ({
         user: state.user,
+        token: state.token,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated(true);
@@ -61,7 +63,8 @@ const useAuthStore = create<AuthState>()(
 );
 
 // 导出便捷的 selectors
-export const selectIsLoggedIn = (state: AuthState) => Boolean(state.user);
+export const selectIsLoggedIn = (state: AuthState) =>
+  Boolean(state.user && state.token);
 export const selectUser = (state: AuthState) => state.user;
 
 export default useAuthStore;
