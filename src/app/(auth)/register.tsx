@@ -17,7 +17,7 @@ const iconSize = 20;
 export default function Register() {
   const router = useRouter();
 
-  const { login } = useLogin('password');
+  const passwordLogin = useLogin('password');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const {
@@ -36,10 +36,13 @@ export default function Register() {
   });
 
   const onSignUp = useCallback(
-    async (_values: SignupInput) => {
-      await login();
+    async (values: SignupInput) => {
+      await passwordLogin.mutateAsync({
+        phone: values.phone,
+        password: values.password,
+      });
     },
-    [login],
+    [passwordLogin],
   );
 
   return (
