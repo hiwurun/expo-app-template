@@ -29,24 +29,26 @@ export function FormInput<T extends FieldValues>({
           {label}
         </Text>
       )}
-      <Controller
-        control={control}
-        name={name}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            className={cn(error && 'border-destructive', className)}
-            {...inputProps}
-          />
+      <View className="relative pb-4">
+        <Controller
+          control={control}
+          name={name}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              value={value == null ? '' : String(value)}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              className={cn(error && 'border-destructive', className)}
+              {...inputProps}
+            />
+          )}
+        />
+        {error && (
+          <Text className="absolute bottom-0 left-0 text-xs text-destructive dark:text-red-400">
+            {error}
+          </Text>
         )}
-      />
-      {error && (
-        <Text className="text-xs text-destructive dark:text-red-400">
-          {error}
-        </Text>
-      )}
+      </View>
     </View>
   );
 }

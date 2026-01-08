@@ -46,7 +46,7 @@ export default function Register() {
   );
 
   return (
-    <AuthScaffold bgTop={-200}>
+    <AuthScaffold bgTop={-280}>
       <ScrollView
         className="flex-1"
         contentContainerClassName="flex-grow justify-end px-6 pb-12 pt-20"
