@@ -1,9 +1,4 @@
-import _AntDesign from '@expo/vector-icons/AntDesign.js';
-import { type IconProps } from '@expo/vector-icons/build/createIconSet.js';
-import { FC } from 'react';
-
-// Types in `@expo/vector-icons` do not currently work correctly in `"type": "module"` packages.
-const AntDesign = _AntDesign as unknown as FC<IconProps<string>>;
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 /**
  * 统一的路由配置
@@ -23,22 +18,22 @@ export const authRoutes = [
 export const tabRoutes = [
   {
     name: 'index',
-    title: 'Home',
-    icon: (focused: boolean) => (
-      <AntDesign
-        color={focused ? 'text-accent' : 'text-text'}
-        name="ie"
+    title: '首页',
+    icon: (focused: boolean, color: string) => (
+      <Ionicons
+        name={focused ? 'home-sharp' : 'home-outline'}
+        color={color}
         size={24}
       />
     ),
   },
   {
     name: 'two',
-    title: 'Two',
-    icon: (focused: boolean) => (
-      <AntDesign
-        color={focused ? 'text-accent' : 'text-text'}
-        name="printer"
+    title: '我的',
+    icon: (focused: boolean, color: string) => (
+      <Ionicons
+        color={color}
+        name={focused ? 'person-sharp' : 'person-outline'}
         size={24}
       />
     ),
@@ -54,9 +49,7 @@ export const navigationConfig = {
     gestureEnabled: false,
   },
   tabScreenOptions: {
-    sceneStyle: {
-      backgroundColor: 'bg-background',
-    },
-    tabBarActiveTintColor: 'text-accent',
+    tabBarActiveTintColor: '#007AFF',
+    tabBarInactiveTintColor: '#8E8E93',
   },
 };

@@ -9,8 +9,13 @@ export default function TabLayout() {
           key={route.name}
           name={route.name}
           options={{
-            tabBarIcon: ({ focused }: { focused: boolean }) =>
-              route.icon(focused),
+            tabBarIcon: ({
+              focused,
+              color,
+            }: {
+              focused: boolean;
+              color: string;
+            }) => route.icon(focused, color),
             title: route.title,
           }}
         />

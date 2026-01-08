@@ -27,7 +27,7 @@ export default function Index() {
 
   return (
     <>
-      <ExpoStack.Screen options={{ title: 'Home' }} />
+      <ExpoStack.Screen options={{ headerShown: false }} />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <VStack alignCenter center flex1 gap={16} padding>
           <Text className="text-center text-xl font-bold color-accent">
