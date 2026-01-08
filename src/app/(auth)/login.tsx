@@ -1,6 +1,5 @@
 import { AuthScaffold } from '@/components/AuthScaffold';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { FormInput } from '@/components/ui/form-input';
 import { Text } from '@/components/ui/text';
 import useLogin, { type LoginType } from '@/hooks/auth/useLogin';
@@ -23,7 +22,6 @@ import { Pressable, ScrollView, View } from 'react-native';
 const iconSize = 20;
 const supportRowHeightClass = 'h-10';
 
-// 密码登录表单 - 完全独立
 function PasswordLoginForm({ onSwitchToCode }: { onSwitchToCode: () => void }) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -105,30 +103,18 @@ function PasswordLoginForm({ onSwitchToCode }: { onSwitchToCode: () => void }) {
           error={errors.password?.message}
         />
 
-        <View
+        {/* <View
           className={cn(
-            'flex-row items-center justify-between',
+            'flex-row items-center justify-end',
             supportRowHeightClass,
           )}
         >
-          <View className="flex-row items-center gap-3">
-            <Checkbox
-              checked={rememberMe}
-              onCheckedChange={(value) => setRememberMe(!!value)}
-              className="border-muted-foreground"
-              checkedClassName="border-destructive"
-              indicatorClassName="bg-destructive"
-              iconClassName="text-destructive-foreground"
-            />
-            <Text className="text-xs font-medium text-foreground">记住我</Text>
-          </View>
-
           <Pressable>
             <Text className="text-xs font-semibold text-destructive">
               忘记密码？
             </Text>
           </Pressable>
-        </View>
+        </View> */}
       </View>
 
       <Button
@@ -153,7 +139,6 @@ function PasswordLoginForm({ onSwitchToCode }: { onSwitchToCode: () => void }) {
   );
 }
 
-// 验证码登录表单 - 完全独立
 function CodeLoginForm({
   onSwitchToPassword,
 }: {
