@@ -3,6 +3,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import { VStack } from '@nkzw/stack';
 import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Two() {
   const router = useRouter();
@@ -14,8 +15,10 @@ export default function Two() {
   }, [clearAuth, router]);
 
   return (
-    <VStack flex1 padding={16}>
-      <Text onPress={logout}>Logout</Text>
-    </VStack>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+      <VStack flex1 padding={16}>
+        <Text onPress={logout}>Logout</Text>
+      </VStack>
+    </SafeAreaView>
   );
 }

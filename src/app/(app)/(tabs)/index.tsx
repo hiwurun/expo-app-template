@@ -8,6 +8,7 @@ import usePointsStore, { selectPoints } from '@/stores/usePointsStore';
 import Stack, { VStack } from '@nkzw/stack';
 import { Stack as ExpoStack } from 'expo-router';
 import { ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Index() {
   const user = useAuthStore(selectUser);
@@ -26,7 +27,7 @@ export default function Index() {
   };
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
       <ExpoStack.Screen options={{ headerShown: false }} />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <VStack alignCenter center flex1 gap={16} padding>
@@ -69,6 +70,6 @@ export default function Index() {
           </Stack>
         </VStack>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 }
