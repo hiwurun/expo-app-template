@@ -2,19 +2,19 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import * as React from 'react';
 
-const handleIcon = (routename: string) => {
+const handleIcon = (routename: string, focused: boolean) => {
   const routeMap = {
     index: {
       focused: 'home',
       unfocused: 'home-outline',
     },
-
-    two: {
-      focused: 'person',
-      unfocused: 'person-outline',
+    market: {
+      focused: 'trending-up',
+      unfocused: 'trending-up-outline',
     },
   };
-  return routeMap[routename as keyof typeof routeMap]?.focused;
+  const route = routeMap[routename as keyof typeof routeMap];
+  return focused ? route?.focused : route?.unfocused;
 };
 
 export default function TabLayout() {
@@ -24,6 +24,7 @@ export default function TabLayout() {
         tabBarIcon: ({ focused, color, size }) => {
           const iconName = handleIcon(
             route.name,
+            focused,
           ) as keyof typeof Ionicons.glyphMap;
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -39,6 +40,19 @@ export default function TabLayout() {
           fontWeight: '600',
         },
       })}
-    ></Tabs>
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: '首页',
+        }}
+      />
+      <Tabs.Screen
+        name="market"
+        options={{
+          title: '行情',
+        }}
+      />
+    </Tabs>
   );
 }

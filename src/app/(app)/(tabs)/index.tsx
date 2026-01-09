@@ -6,7 +6,6 @@ import { fetchGET } from '@/lib/fetch-helper';
 import useAuthStore, { selectUser } from '@/stores/useAuthStore';
 import usePointsStore, { selectPoints } from '@/stores/usePointsStore';
 import Stack, { VStack } from '@nkzw/stack';
-import { Stack as ExpoStack } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -27,13 +26,9 @@ export default function Index() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
-      <ExpoStack.Screen options={{ headerShown: false }} />
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <VStack alignCenter center flex1 gap={16} padding>
-          <Text className="text-center text-xl font-bold color-accent">
-            Welcome
-          </Text>
           <Text className="text-center italic">
             Modern, sensible defaults, fast.
           </Text>
