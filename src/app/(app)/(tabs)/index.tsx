@@ -6,6 +6,7 @@ import { fetchGET } from '@/lib/fetch-helper';
 import useAuthStore, { selectUser } from '@/stores/useAuthStore';
 import usePointsStore, { selectPoints } from '@/stores/usePointsStore';
 import Stack, { VStack } from '@nkzw/stack';
+import * as Haptics from 'expo-haptics';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -32,7 +33,15 @@ export default function Index() {
           <Text className="text-center italic">
             Modern, sensible defaults, fast.
           </Text>
-
+          <Button
+            onPress={() =>
+              Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Success,
+              )
+            }
+          >
+            <Text>测试</Text>
+          </Button>
           {/* 调试信息 */}
           <VStack className="bg-subtle w-full rounded-lg p-4" gap={8}>
             <Text className="font-bold">User:</Text>

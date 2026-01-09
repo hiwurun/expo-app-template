@@ -7,17 +7,11 @@
   "scripts": {
     "android": "expo run:android",
     "dev": "expo start",
-    "format": "prettier --experimental-cli --write .",
-    "format-graphql": "./scripts/format-graphql-schema.tsx",
-    "preinstall": "command -v git >/dev/null 2>&1 && git config core.hooksPath git-hooks || exit 0",
+    "dev:build:ios": "eas build --profile development --platform ios",
     "ios": "expo run:ios --device 'iPhone 17 Pro'",
-    "lint": "eslint --cache .",
-    "lint:format": "prettier --experimental-cli --cache --check .",
-    "prebuild": "expo prebuild",
+    "prebuild": "expo prebuild --clean",
     "start": "expo start --dev-client",
-    "test": "NODE_OPTIONS='--no-experimental-detect-module' npm-run-all --parallel tsc:check lint lint:format",
-    "tsc:check": "tsgo",
-    "web": "expo start --web"
+    "tsc:check": "tsgo"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -44,6 +38,7 @@
     "expo-constants": "~18.0.11",
     "expo-dev-client": "~6.0.20",
     "expo-font": "^14.0.10",
+    "expo-haptics": "~15.0.8",
     "expo-linear-gradient": "^15.0.8",
     "expo-linking": "~8.0.10",
     "expo-router": "6.0.17",

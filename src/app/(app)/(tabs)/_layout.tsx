@@ -1,58 +1,43 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Tabs } from 'expo-router';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
+import Index from './index';
+import Market from './market';
 
-const handleIcon = (routename: string, focused: boolean) => {
-  const routeMap = {
-    index: {
-      focused: 'home',
-      unfocused: 'home-outline',
-    },
-    market: {
-      focused: 'trending-up',
-      unfocused: 'trending-up-outline',
-    },
-  };
-  const route = routeMap[routename as keyof typeof routeMap];
-  return focused ? route?.focused : route?.unfocused;
-};
+const Tab = createBottomTabNavigator();
 
-export default function TabLayout() {
+export default function App() {
   return (
-    <Tabs
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          const iconName = handleIcon(
-            route.name,
-            focused,
-          ) as keyof typeof Ionicons.glyphMap;
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
-        headerShown: false,
-        animation: 'shift',
-        tabBarItemStyle: {
-          paddingVertical: 5,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '600',
-        },
-      })}
+    <Tab.Navigator
+      screenOptions={({ route }) => {
+        const iconMap: Record<string, { active: string; inactive: string }> = {
+          首页: { active: 'home', inactive: 'home-outline' },
+          市场: { active: 'storefront', inactive: 'storefront-outline' },
+        };
+
+        return {
+          tabBarIcon: ({ focused, color, size }) => {
+            const icon = iconMap[route.name] ?? {
+              active: 'help',
+              inactive: 'help-outline',
+            };
+            return (
+              <Ionicons
+                name={(focused ? icon.active : icon.inactive) as any}
+                size={size}
+                color={color}
+              />
+            );
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+          headerShown: false, // 隐藏顶部 header
+          animation: 'shift',
+        };
+      }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: '首页',
-        }}
-      />
-      <Tabs.Screen
-        name="market"
-        options={{
-          title: '行情',
-        }}
-      />
-    </Tabs>
+      <Tab.Screen name="首页" component={Index} />
+      <Tab.Screen name="市场" component={Market} />
+    </Tab.Navigator>
   );
 }
