@@ -12,12 +12,12 @@ const getBaseURL = (): string => {
 
 /**
  * 处理 401 未授权错误
- * 清除认证状态并跳转到欢迎页面
+ * 清除认证状态并跳转到登录页面
  */
 const handleUnauthorized = () => {
   useAuthStore.getState().logout();
   usePointsStore.getState().clearPoints();
-  router.replace('/welcome');
+  router.replace('/login');
 };
 
 /**

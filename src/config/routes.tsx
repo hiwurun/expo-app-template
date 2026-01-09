@@ -6,11 +6,7 @@
 export const rootRoutes = [{ name: '(auth)' }, { name: '(app)' }] as const;
 
 // 认证路由配置
-export const authRoutes = [
-  { name: 'welcome' },
-  { name: 'login' },
-  { name: 'register' },
-] as const;
+export const authRoutes = [{ name: 'login' }, { name: 'register' }] as const;
 
 // 导航配置
 export const navigationConfig = {

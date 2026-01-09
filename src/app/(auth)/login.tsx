@@ -1,8 +1,8 @@
 import { AuthScaffold } from '@/components/AuthScaffold';
+import { BottomSheetFormInput } from '@/components/ui/bottom-sheet-form-input';
 import { Button } from '@/components/ui/button';
-import { FormInput } from '@/components/ui/form-input';
 import { Text } from '@/components/ui/text';
-import useLogin, { type LoginType } from '@/hooks/auth/useLogin';
+import useLogin from '@/hooks/auth/useLogin';
 import { useSendCode } from '@/hooks/auth/useSendCode';
 import { useOtpCountdown } from '@/hooks/useOtpCountdown';
 import { cn } from '@/lib/utils';
@@ -12,20 +12,23 @@ import {
   type LoginCodeInput,
   type LoginPasswordInput,
 } from '@/schemas';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetView,
+  type BottomSheetBackdropProps,
+} from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import { Eye, EyeClosed, Lock, Phone, ShieldCheck } from 'lucide-react-native';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 const iconSize = 20;
-const supportRowHeightClass = 'h-10';
 
-function PasswordLoginForm({ onSwitchToCode }: { onSwitchToCode: () => void }) {
-  const router = useRouter();
+function PasswordLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const { mutation: passwordLogin } = useLogin('password');
 
   const {
@@ -46,76 +49,52 @@ function PasswordLoginForm({ onSwitchToCode }: { onSwitchToCode: () => void }) {
   });
 
   return (
-    <>
-      <View className="gap-6">
-        <View className="flex-row rounded-full border border-border bg-accent/20 p-1">
-          <Pressable className="flex-1 items-center rounded-full bg-destructive px-4 py-2">
-            <Text className="text-sm font-semibold text-destructive-foreground">
-              密码登录
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={onSwitchToCode}
-            className="flex-1 items-center rounded-full px-4 py-2"
-          >
-            <Text className="text-sm font-semibold text-muted-foreground">
-              验证码登录
-            </Text>
-          </Pressable>
-        </View>
-
-        <FormInput
-          control={control}
-          name="phone"
-          label="手机号"
-          placeholder="请输入手机号"
-          leftIcon={<Phone size={iconSize} />}
-          keyboardType="phone-pad"
-          containerClassName={cn(
-            'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
-            errors.phone && 'border-destructive',
-          )}
-          className="text-foreground"
-          error={errors.phone?.message}
-        />
-
-        <FormInput
-          control={control}
-          name="password"
-          label="密码"
-          placeholder="请输入密码"
-          secureTextEntry={!showPassword}
-          leftIcon={<Lock size={iconSize} />}
-          rightIcon={
-            <Pressable onPress={() => setShowPassword(!showPassword)}>
-              {showPassword ? (
-                <Eye size={iconSize} />
-              ) : (
-                <EyeClosed size={iconSize} />
-              )}
-            </Pressable>
-          }
-          containerClassName={cn(
-            'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
-            errors.password && 'border-destructive',
-          )}
-          className="text-foreground"
-          error={errors.password?.message}
-        />
-
-        {/* <View
-          className={cn(
-            'flex-row items-center justify-end',
-            supportRowHeightClass,
-          )}
-        >
-          <Pressable>
-            <Text className="text-xs font-semibold text-destructive">
-              忘记密码？
-            </Text>
-          </Pressable>
-        </View> */}
+    <View className="gap-6">
+      <View className="gap-2">
+        <Text className="text-2xl font-bold text-white">密码登录</Text>
+        <View className="h-[3px] w-16 bg-destructive" />
       </View>
+
+      <BottomSheetFormInput
+        control={control}
+        name="phone"
+        label="手机号"
+        placeholder="请输入手机号"
+        leftIcon={<Phone size={iconSize} color="#FFFFFF" />}
+        keyboardType="phone-pad"
+        containerClassName={cn(
+          'bg-transparent border-0 border-b border-white/20 rounded-none px-0 h-auto py-2',
+          errors.phone && 'border-destructive',
+        )}
+        className="text-white"
+        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        error={errors.phone?.message}
+      />
+
+      <BottomSheetFormInput
+        control={control}
+        name="password"
+        label="密码"
+        placeholder="请输入密码"
+        secureTextEntry={!showPassword}
+        leftIcon={<Lock size={iconSize} color="#FFFFFF" />}
+        rightIcon={
+          <Pressable onPress={() => setShowPassword(!showPassword)}>
+            {showPassword ? (
+              <Eye size={iconSize} color="#FFFFFF" />
+            ) : (
+              <EyeClosed size={iconSize} color="#FFFFFF" />
+            )}
+          </Pressable>
+        }
+        containerClassName={cn(
+          'bg-transparent border-0 border-b border-white/20 rounded-none px-0 h-auto py-2',
+          errors.password && 'border-destructive',
+        )}
+        className="text-white"
+        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        error={errors.password?.message}
+      />
 
       <Button
         onPress={onSubmit}
@@ -128,23 +107,11 @@ function PasswordLoginForm({ onSwitchToCode }: { onSwitchToCode: () => void }) {
           登录
         </Text>
       </Button>
-
-      <View className="flex-row justify-center gap-1">
-        <Text className="text-sm text-muted-foreground">还没有账号？</Text>
-        <Pressable onPress={() => router.replace('/register')}>
-          <Text className="text-sm font-medium text-destructive">立即注册</Text>
-        </Pressable>
-      </View>
-    </>
+    </View>
   );
 }
 
-function CodeLoginForm({
-  onSwitchToPassword,
-}: {
-  onSwitchToPassword: () => void;
-}) {
-  const router = useRouter();
+function CodeLoginForm() {
   const { mutation: codeLogin } = useLogin('code');
   const sendCode = useSendCode();
 
@@ -196,68 +163,55 @@ function CodeLoginForm({
       : '发送验证码';
 
   return (
-    <>
-      <View className="gap-6">
-        <View className="flex-row rounded-full border border-border bg-accent/20 p-1">
-          <Pressable
-            onPress={onSwitchToPassword}
-            className="flex-1 items-center rounded-full px-4 py-2"
-          >
-            <Text className="text-sm font-semibold text-muted-foreground">
-              密码登录
-            </Text>
-          </Pressable>
-          <Pressable className="flex-1 items-center rounded-full bg-destructive px-4 py-2">
-            <Text className="text-sm font-semibold text-destructive-foreground">
-              验证码登录
-            </Text>
-          </Pressable>
-        </View>
-
-        <FormInput
-          control={control}
-          name="phone"
-          label="手机号"
-          placeholder="请输入手机号"
-          leftIcon={<Phone size={iconSize} />}
-          keyboardType="phone-pad"
-          containerClassName={cn(
-            'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
-            errors.phone && 'border-destructive',
-          )}
-          className="text-foreground"
-          error={errors.phone?.message}
-        />
-
-        <FormInput
-          control={control}
-          name="code"
-          label="验证码"
-          placeholder="请输入验证码"
-          leftIcon={<ShieldCheck size={iconSize} />}
-          keyboardType="number-pad"
-          rightIcon={
-            <Pressable disabled={isSendDisabled} onPress={onSendCode}>
-              <Text
-                className={cn(
-                  'text-xs font-semibold',
-                  isSendDisabled ? 'text-muted-foreground' : 'text-destructive',
-                )}
-              >
-                {sendButtonText}
-              </Text>
-            </Pressable>
-          }
-          containerClassName={cn(
-            'bg-transparent border-0 border-b border-border rounded-none px-0 h-auto py-2',
-            errors.code && 'border-destructive',
-          )}
-          className="text-foreground"
-          error={errors.code?.message}
-        />
-
-        <View className={supportRowHeightClass} />
+    <View className="gap-6">
+      <View className="gap-2">
+        <Text className="text-2xl font-bold text-white">验证码登录</Text>
+        <View className="h-[3px] w-16 bg-destructive" />
       </View>
+
+      <BottomSheetFormInput
+        control={control}
+        name="phone"
+        label="手机号"
+        placeholder="请输入手机号"
+        leftIcon={<Phone size={iconSize} color="#FFFFFF" />}
+        keyboardType="phone-pad"
+        containerClassName={cn(
+          'bg-transparent border-0 border-b border-white/20 rounded-none px-0 h-auto py-2',
+          errors.phone && 'border-destructive',
+        )}
+        className="text-white"
+        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        error={errors.phone?.message}
+      />
+
+      <BottomSheetFormInput
+        control={control}
+        name="code"
+        label="验证码"
+        placeholder="请输入验证码"
+        leftIcon={<ShieldCheck size={iconSize} color="#FFFFFF" />}
+        keyboardType="number-pad"
+        rightIcon={
+          <Pressable disabled={isSendDisabled} onPress={onSendCode}>
+            <Text
+              className={cn(
+                'text-xs font-semibold',
+                isSendDisabled ? 'text-white/50' : 'text-destructive',
+              )}
+            >
+              {sendButtonText}
+            </Text>
+          </Pressable>
+        }
+        containerClassName={cn(
+          'bg-transparent border-0 border-b border-white/20 rounded-none px-0 h-auto py-2',
+          errors.code && 'border-destructive',
+        )}
+        className="text-white"
+        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        error={errors.code?.message}
+      />
 
       <Button
         onPress={onSubmit}
@@ -270,43 +224,117 @@ function CodeLoginForm({
           登录
         </Text>
       </Button>
-
-      <View className="flex-row justify-center gap-1">
-        <Text className="text-sm text-muted-foreground">还没有账号？</Text>
-        <Pressable onPress={() => router.replace('/register')}>
-          <Text className="text-sm font-medium text-destructive">立即注册</Text>
-        </Pressable>
-      </View>
-    </>
+    </View>
   );
 }
 
 export default function Login() {
-  const [loginType, setLoginType] = useState<LoginType>('password');
+  const router = useRouter();
+  const passwordSheetRef = useRef<BottomSheetModal>(null);
+  const codeSheetRef = useRef<BottomSheetModal>(null);
+
+  const snapPoints = useMemo(() => ['50%'], []);
+
+  // 背景组件
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+      />
+    ),
+    [],
+  );
+
+  // 打开密码登录
+  const handleOpenPasswordLogin = useCallback(() => {
+    passwordSheetRef.current?.present();
+  }, []);
+
+  // 打开验证码登录
+  const handleOpenCodeLogin = useCallback(() => {
+    codeSheetRef.current?.present();
+  }, []);
 
   return (
-    <AuthScaffold bgTop={-250}>
-      <ScrollView
-        className="flex-1"
-        contentContainerClassName="flex-grow justify-end px-6 pb-12 pt-20"
-      >
-        <View className="w-full max-w-md gap-8">
-          <View className="gap-2">
-            <Text className="text-[38px] font-medium text-foreground">
-              登录
-            </Text>
-            <View className="h-[3px] w-[74px] bg-destructive" />
-          </View>
-
-          {loginType === 'password' ? (
-            <PasswordLoginForm onSwitchToCode={() => setLoginType('code')} />
-          ) : (
-            <CodeLoginForm
-              onSwitchToPassword={() => setLoginType('password')}
-            />
-          )}
+    <AuthScaffold>
+      <View className="flex-1 justify-end gap-4 px-10 pb-16">
+        <View className="gap-2">
+          <Text className="text-5xl font-bold text-background">
+            Open <Text className="text-5xl font-bold text-[#9990FF]">Vlab</Text>
+          </Text>
+          <Text className="text-base text-white/80">
+            我们为期权交易者提供高效的图表工具
+          </Text>
         </View>
-      </ScrollView>
+
+        <View className="flex-row gap-3 pt-20">
+          <Button
+            onPress={handleOpenPasswordLogin}
+            variant="default"
+            size="lg"
+            className="flex-1 rounded-3xl bg-background"
+          >
+            <Text className="text-base font-semibold text-foreground">
+              密码登录
+            </Text>
+          </Button>
+          <Button
+            onPress={handleOpenCodeLogin}
+            variant="outline"
+            size="lg"
+            className="flex-1 rounded-3xl border-border bg-transparent"
+          >
+            <Text className="text-base font-semibold text-background">
+              验证码登录
+            </Text>
+          </Button>
+        </View>
+
+        {/* <View className="flex-row justify-center gap-1 pt-6">
+          <Text className="text-sm text-white/60">还没有账号？</Text>
+          <Pressable onPress={() => router.replace('/register')}>
+            <Text className="text-sm font-medium text-background">
+              立即注册
+            </Text>
+          </Pressable>
+        </View> */}
+      </View>
+
+      {/* 密码登录 Bottom Sheet */}
+      <BottomSheetModal
+        ref={passwordSheetRef}
+        snapPoints={snapPoints}
+        backdropComponent={renderBackdrop}
+        enableDynamicSizing={false}
+        keyboardBehavior="interactive"
+        keyboardBlurBehavior="restore"
+        android_keyboardInputMode="adjustResize"
+        enablePanDownToClose
+        backgroundStyle={{ backgroundColor: 'rgba(0, 0, 0)' }}
+      >
+        <BottomSheetView className="flex-1 px-6 pb-8">
+          <PasswordLoginForm />
+        </BottomSheetView>
+      </BottomSheetModal>
+
+      {/* 验证码登录 Bottom Sheet */}
+      <BottomSheetModal
+        ref={codeSheetRef}
+        snapPoints={snapPoints}
+        backdropComponent={renderBackdrop}
+        enableDynamicSizing={false}
+        keyboardBehavior="interactive"
+        keyboardBlurBehavior="restore"
+        android_keyboardInputMode="adjustResize"
+        enablePanDownToClose
+        backgroundStyle={{ backgroundColor: 'rgba(0, 0, 0)' }}
+      >
+        <BottomSheetView className="flex-1 px-6 pb-8">
+          <CodeLoginForm />
+        </BottomSheetView>
+      </BottomSheetModal>
     </AuthScaffold>
   );
 }
