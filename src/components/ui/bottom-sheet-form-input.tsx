@@ -1,4 +1,4 @@
-import { BottomSheetTextInput } from '@/components/BottomSheetTextInput';
+import { BottomSheetTextInput } from '@/components/bottom-sheet-text-input';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';

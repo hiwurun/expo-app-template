@@ -1,4 +1,4 @@
-import { AuthScaffold } from '@/components/AuthScaffold';
+import { AuthScaffold } from '@/components/auth-scaffold';
 import { Button } from '@/components/ui/button';
 import { FormInput } from '@/components/ui/form-input';
 import { Text } from '@/components/ui/text';

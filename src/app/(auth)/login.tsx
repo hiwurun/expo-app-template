@@ -1,4 +1,4 @@
-import { AuthScaffold } from '@/components/AuthScaffold';
+import { AuthScaffold } from '@/components/auth-scaffold';
 import { BottomSheetFormInput } from '@/components/ui/bottom-sheet-form-input';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
@@ -60,14 +60,12 @@ function PasswordLoginForm() {
         name="phone"
         label="手机号"
         placeholder="请输入手机号"
-        leftIcon={<Phone size={iconSize} color="#FFFFFF" />}
+        leftIcon={<Phone size={iconSize} color="white" />}
         keyboardType="phone-pad"
         containerClassName={cn(
           'bg-transparent border-0 border-b border-white/20 rounded-none px-0 h-auto py-2',
           errors.phone && 'border-destructive',
         )}
-        className="text-white"
-        placeholderTextColor="rgba(255, 255, 255, 0.5)"
         error={errors.phone?.message}
       />
 
@@ -77,13 +75,13 @@ function PasswordLoginForm() {
         label="密码"
         placeholder="请输入密码"
         secureTextEntry={!showPassword}
-        leftIcon={<Lock size={iconSize} color="#FFFFFF" />}
+        leftIcon={<Lock size={iconSize} color="white" />}
         rightIcon={
           <Pressable onPress={() => setShowPassword(!showPassword)}>
             {showPassword ? (
-              <Eye size={iconSize} color="#FFFFFF" />
+              <Eye size={iconSize} color="white" />
             ) : (
-              <EyeClosed size={iconSize} color="#FFFFFF" />
+              <EyeClosed size={iconSize} color="white" />
             )}
           </Pressable>
         }
@@ -91,8 +89,6 @@ function PasswordLoginForm() {
           'bg-transparent border-0 border-b border-white/20 rounded-none px-0 h-auto py-2',
           errors.password && 'border-destructive',
         )}
-        className="text-white"
-        placeholderTextColor="rgba(255, 255, 255, 0.5)"
         error={errors.password?.message}
       />
 
@@ -166,7 +162,7 @@ function CodeLoginForm() {
     <View className="gap-6">
       <View className="gap-2">
         <Text className="text-2xl font-bold text-white">验证码登录</Text>
-        <View className="h-[3px] w-16 bg-destructive" />
+        <View className="h-[3px] w-28 bg-destructive" />
       </View>
 
       <BottomSheetFormInput
