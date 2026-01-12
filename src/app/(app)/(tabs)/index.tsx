@@ -6,6 +6,7 @@ import { fetchGET } from '@/lib/fetch-helper';
 import useAuthStore, { selectUser } from '@/stores/useAuthStore';
 import usePointsStore, { selectPoints } from '@/stores/usePointsStore';
 import Stack, { VStack } from '@nkzw/stack';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import * as Haptics from 'expo-haptics';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Index() {
   const user = useAuthStore(selectUser);
   const points = usePointsStore(selectPoints);
+  const tabBarHeight = useBottomTabBarHeight();
 
   // 测试 401：先把 token 改成无效值，再发起请求触发 401
   const test401 = async () => {
@@ -28,7 +30,9 @@ export default function Index() {
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top']}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarHeight }}
+      >
         <VStack alignCenter center flex1 gap={16} padding>
           <Text className="text-center italic">
             Modern, sensible defaults, fast.

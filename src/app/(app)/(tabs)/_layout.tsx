@@ -3,14 +3,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
 import * as React from 'react';
 import { StyleSheet } from 'react-native'; // 引入 StyleSheet
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Index from './index';
 import Market from './market';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = 56 + Math.min(insets.bottom, 10);
+
   return (
     <Tab.Navigator
+      safeAreaInsets={{ bottom: 0 }}
       screenOptions={({ route }) => {
         const iconMap: Record<string, { active: string; inactive: string }> = {
           首页: { active: 'home', inactive: 'home-outline' },
@@ -40,6 +45,9 @@ export default function App() {
             position: 'absolute',
             backgroundColor: 'transparent', // 推荐加上，避免默认白底干扰
             borderTopWidth: 0, // 可选：去掉顶部边线
+            height: tabBarHeight,
+            paddingBottom: Math.min(insets.bottom, 10),
+            paddingTop: 6,
           },
           // 关键2：BlurView 完全填充
           tabBarBackground: () => (
