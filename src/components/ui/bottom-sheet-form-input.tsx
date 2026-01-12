@@ -1,6 +1,7 @@
-import { BottomSheetTextInput } from '@/components/bottom-sheet-text-input';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
+import { BottomSheetTextInput as OriginalBottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { cssInterop } from 'nativewind';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import {
   Platform,
@@ -8,6 +9,12 @@ import {
   type TextInputProps,
   type ViewStyle,
 } from 'react-native';
+
+const BottomSheetTextInput = cssInterop(OriginalBottomSheetTextInput, {
+  className: {
+    target: 'style',
+  },
+});
 
 interface BottomSheetInputProps extends TextInputProps {
   leftIcon?: React.ReactNode;
